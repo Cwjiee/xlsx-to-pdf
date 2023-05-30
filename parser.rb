@@ -3,14 +3,13 @@ require 'rubyXL/convenience_methods'
 
 class Parser
 
-  def initialize(name)
+  def initialize name
     @workbook = RubyXL::Parser.parse("../#{name}.xlsx")
   end
 
   # looks for a specific worksheet inside a workbook
   def set_file
     @worksheet = @workbook[0]
-    # workbook = RubyXL::Parser.parse('../workbook1.xlsx')
   end
 
   # stores the relevant data
@@ -33,14 +32,18 @@ class Parser
 
   # sorts the data in ascending order
   def sort
-    @arr.sort_by! { |hsh| hsh[:price] }
+    @arr.sort_by { |hsh| hsh[:price] }.reverse!
   end
 
   # displays the data
   def get_data
     puts
-    @arr.each { |row| puts "name: #{row[:name]}, price: #{row[:price]}, quantity: #{row[:quantity]}" }
+    @arr.map do |row| 
+      row[:total] = (row[:price] * row[:quantity]).round(2)
+      puts "name: #{row[:name]}, price: #{row[:price]}, quantity: #{row[:quantity]} , total: #{row[:total]}"
+    end
     puts
+    @arr
   end
 end
 
@@ -48,9 +51,11 @@ def run_parser
   print 'file name : '
   name = gets.chomp
 
-  parser = Parser.new(name)
+  parser = Parser.new name
   parser.set_file
   parser.set_data
   parser.sort
-  parser.get_data
+  data = parser.get_data
+  info = { name: name, data: data }
+  info
 end

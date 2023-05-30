@@ -1,5 +1,6 @@
 require './parser'
 require './generator'
 
+info = run_parser
 # run_parser
-generate_report
+generate_report(info)
