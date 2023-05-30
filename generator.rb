@@ -56,7 +56,7 @@ end
 
 def generate_report data
 
-    header = "Invoice new"
+    header = "Invoice"
     name = "../#{data[:name]}.pdf"
 
     if puts File.exist? name
